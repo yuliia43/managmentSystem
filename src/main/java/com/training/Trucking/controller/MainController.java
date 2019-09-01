@@ -49,6 +49,9 @@ public class MainController {
         }else if (auth.getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_MANAGER"))) {
             return "redirect:manager/new_requests";
+        }else if(auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_MASTER"))) {
+            return "redirect:master/new_requests";
         }
         return "redirect:user/personal-cabinet";
     }

@@ -67,7 +67,7 @@ public class RequestController {
     }
 
     @PostMapping(value = "/manager/new_requests")
-    public String confirmOrder(@RequestParam("id") long id,
+    public String makeAcceptedOrRejected(@RequestParam("id") long id,
                                @RequestParam("master") String master,
                                @RequestParam("reason") String reason,
                                @RequestParam("price") Long price) {
@@ -79,9 +79,61 @@ public class RequestController {
             requestService.updateStatusAndMasterById("accepted", id, master, null, price);
             log.info("{}", "accept");
         }
-        //Request request = requestService.findRequestById(id);
-//        request.setStatus("accepted");
-//        requestService.saveRequest(request);
         return "redirect:/manager/new_requests";
+    }
+
+    @GetMapping(value = "/master/new_requests")
+    public String getAcceptedRequests(Model model) {
+        try {
+            log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            model.addAttribute("newRequests", requestService.getRequestsByStatusAndEmail("accepted",
+                    SecurityContextHolder.getContext().getAuthentication().getName()));
+
+        } catch (Exception e) {
+            model.addAttribute("error", "You have not requests");
+        }
+        return "master-new-requests.html";
+    }
+
+    @GetMapping(value = "/master/new_requests/in_process")
+    public String makeRequestInProgress(@RequestParam("id") long id) {
+        requestService.updateStatusById("in progress", id);
+        return "redirect:/master/new_requests";
+    }
+
+    @GetMapping(value = "/master/in_progress_requests")
+    public String getInProgressRequests(Model model) {
+        try {
+            log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            model.addAttribute("inProgressRequests", requestService.getRequestsByStatusAndEmail("in progress",
+                    SecurityContextHolder.getContext().getAuthentication().getName()));
+
+        } catch (Exception e) {
+            model.addAttribute("error", "You have not requests");
+        }
+        return "master-in-progress-requests.html";
+    }
+
+    @GetMapping(value = "/master/in_progress_requests/completed")
+    public String makeRequestCompleted(@RequestParam("id") long id) {
+        requestService.updateStatusById("completed", id);
+        return "redirect:/master/in_progress_requests";
+    }
+
+
+    @GetMapping(value = "/master/completed_requests")
+    public String getCompletedRequests(Model model) {
+        try {
+            log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            model.addAttribute("completedRequests", requestService.getRequestsByStatusAndEmail("completed",
+                    SecurityContextHolder.getContext().getAuthentication().getName()));
+
+        } catch (Exception e) {
+            model.addAttribute("error", "You have not requests");
+        }
+        return "master-completed-requests.html";
     }
 }

@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class RequestDTO {
+    @NotNull(message = "{not.null}")
+    Long id;
 
     @NotNull(message = "{not.null}")
     @Size(min = 5, max = 255, message = "{length.request}")
