@@ -19,12 +19,12 @@
              id="navcol-1">
             <ul class="nav navbar-nav mr-auto">
                 <li class="nav-item"  ><a class="nav-link"
-                                          href="/user/create_request"
-                                          th:text="#{new_request}"></a>
+                                                                                                 href="/user/create_request"
+                                                                                                 th:text="#{new_request}"></a>
                 </li>
                 <li class="nav-item" ><a class="nav-link"
-                                         href="/user/all_requests"
-                                         th:text="#{my_orders}"></a>
+                                                                                                 href="/user/all_requests"
+                                                                                                 th:text="#{my_orders}"></a>
                 </li>
                 <li class="nav-item" ><a
                         class="nav-link"
@@ -56,42 +56,60 @@
         </div>
     </div>
 </div>
-<div  style="margin:0 auto;" class="row justify-content-center align-items-center align-content-center align-self-center">
-    <div class="col" style="width: 404px;">
-        <form  th:action="@{/user/create_request}"
-              method="post">
-            <label th:text="#{new_request}"/>
-        <br/>
-            <textarea name="request" rows="3"></textarea>
-            <button type="submit" th:text="#{msq.create}" class="btn btn-light">
-                Create
-            </button>
-        </form>
+<div class="row">
+    <div class="col">
+        <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;" th:text="#{my.requests}">
+            <strong></strong></p>
     </div>
 </div>
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/assets/js/script.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#locales").click(function () {
-                    var selectedOption = $('#locales').val();
-                    if (selectedOption != '') {
-                        window.location.replace('?lang=' + selectedOption);
-                    }
-                });
-            });
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#locales2").click(function () {
-                    var selectedOption = $('#locales2').val();
-                    if (selectedOption != '') {
-                        window.location.replace('?lang=' + selectedOption);
-                    }
-                });
-            });
-        </script>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Request</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Rejection reason<br/>
+                        (if status is rejected)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${userRequest}">
+                    <td th:text="${user.request} "></td>
+                    <td th:text="${user.status}"></td>
+                    <td th:text="${user.price}"></td>
+                    <td th:text="${user.reason}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/script.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

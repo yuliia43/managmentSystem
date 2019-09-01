@@ -58,40 +58,40 @@
 </div>
 <div  style="margin:0 auto;" class="row justify-content-center align-items-center align-content-center align-self-center">
     <div class="col" style="width: 404px;">
-        <form  th:action="@{/user/create_request}"
-              method="post">
-            <label th:text="#{new_request}"/>
-        <br/>
-            <textarea name="request" rows="3"></textarea>
+        <form  th:action="@{/user/create_comment}"
+               method="post">
+            <label th:text="#{new_comment}"/>
+            <br/>
+            <textarea name="comment" rows="3"></textarea>
             <button type="submit" th:text="#{msq.create}" class="btn btn-light">
                 Create
             </button>
         </form>
     </div>
 </div>
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/assets/js/script.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#locales").click(function () {
-                    var selectedOption = $('#locales').val();
-                    if (selectedOption != '') {
-                        window.location.replace('?lang=' + selectedOption);
-                    }
-                });
-            });
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#locales2").click(function () {
-                    var selectedOption = $('#locales2').val();
-                    if (selectedOption != '') {
-                        window.location.replace('?lang=' + selectedOption);
-                    }
-                });
-            });
-        </script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/script.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/confirm-account/**",
                         "/confirm-account").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER")
+                .antMatchers("/manager/**").hasAnyRole("MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

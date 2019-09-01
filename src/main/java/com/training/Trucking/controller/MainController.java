@@ -28,7 +28,7 @@ public class MainController {
                                       @RequestParam("weight") Integer weight, Model model) {
         model.addAttribute("firstCity", fromCity);
         model.addAttribute("secondCity", toCity);
-        if(weight == null){
+        if (weight == null) {
             return "index.html";
         }
         model.addAttribute("weight", weight);
@@ -44,10 +44,14 @@ public class MainController {
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
             return "redirect:admin/cabinet";
         } else if (auth.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_MASTER"))){
-            return
-            return "redirect:user/personal-cabinet";
+                .anyMatch(r -> r.getAuthority().equals("ROLE_USER"))) {
+            return "redirect:user/create_request";
+        }else if (auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_MANAGER"))) {
+            return "redirect:manager/new_requests";
         }
+        return "redirect:user/personal-cabinet";
     }
-
 }
+
+

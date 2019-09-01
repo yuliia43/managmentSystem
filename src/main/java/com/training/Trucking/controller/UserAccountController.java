@@ -61,7 +61,7 @@ public class UserAccountController {
             return "redirect:/user/place-order";
         }
         orderService.saveOrder(orderDTO);
-        ;
+
         return "redirect:/user/personal-cabinet";
     }
 
