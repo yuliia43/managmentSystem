@@ -10,20 +10,21 @@
     <link rel="stylesheet" href="/assets/css/styles4.min.css">
 </head>
 <body>
+<h1 th:text="#{accept.request}"/>
 <form  style="padding-top:75px" method="post" id="formAccept"  th:action="@{/manager/new_requests/accept/req}" th:object="${requestDto}">
+    <label th:text="#{price}"/>
     <input id="price"
            th:field="*{price}"
            type="text"
-           class="form-control"
-           placeholder="Price"/>
+           class="form-control"/>
     <input th:value="${param.id}" th:field="*{id}" type="hidden"/>
+
+    <label th:text="#{master}"/>
     <select id="mas" th:field="*{master}">
-
-
         <option  th:each="master:${masters}" th:value="${master.email}" th:text="${master.email}"></option>
     </select>
 
-    <button type="submit">Save</button>
+    <button type="submit" th:text="#{accept}"/>
 </form>
 </body>
 </html>

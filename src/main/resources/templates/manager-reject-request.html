@@ -10,15 +10,16 @@
     <link rel="stylesheet" href="/assets/css/styles4.min.css">
 </head>
 <body>
+<h1 th:text="#{reject.request}"/>
 <form  style="padding-top:75px" method="post" id="formAccept"  th:action="@{/manager/new_requests/reject/req}" th:object="${requestDto}">
+    <label th:text="#{reason}"></label>
     <input id="price"
            th:field="*{reason}"
            type="text"
-           class="form-control"
-           placeholder="Price"/>
+           class="form-control"/>
     <input th:value="${param.id}" th:field="*{id}" type="hidden"/>
 
-    <button type="submit">Save</button>
+    <button type="submit" th:text="#{reject}"/>
 </form>
 </body>
 </html>
