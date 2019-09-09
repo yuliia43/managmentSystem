@@ -25,18 +25,22 @@ public class CommentController {
     }
 
     @PostMapping("/user/create_comment")
-    public String createRequest(@RequestParam("comment") String  comment,
+    public String createComment(@RequestParam("comment") String comment,
+                                @RequestParam(value = "error", required = false) String error,
                                 Model model) {
-        model.addAttribute("comment",comment);
-        commentService.saveComment(CommentDTO.builder()
-                .comment(comment)
-                .date(LocalDate.now())
-                .username(SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getName())
-                .build() );
-
+        model.addAttribute("comment", comment);
+        if (comment.isEmpty()) {
+            model.addAttribute("error", error != null);
+        } else {
+            commentService.saveComment(CommentDTO.builder()
+                    .comment(comment)
+                    .date(LocalDate.now())
+                    .username(SecurityContextHolder
+                            .getContext()
+                            .getAuthentication()
+                            .getName())
+                    .build());
+        }
         //ConfirmationToken confirmationToken = new ConfirmationToken(userService.findByEmail(userDTO.getEmail()).get());
         //confirmationTokenService.save(confirmationToken);
         //emailSenderService.sendEmail(userDTO.getEmail(), confirmationToken);

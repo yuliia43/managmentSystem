@@ -1,14 +1,11 @@
 package com.training.Trucking.controller;
 
-import com.training.Trucking.dto.RequestDTO;
-import com.training.Trucking.dto.UserDTO;
+import com.training.Trucking.dto.RequestInfoDTO;
 import com.training.Trucking.entity.Request;
-import com.training.Trucking.entity.Role;
 import com.training.Trucking.service.RequestService;
 import com.training.Trucking.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -40,9 +32,14 @@ public class RequestController {
 
     @PostMapping("/user/create_request")
     public String createRequest(@RequestParam("request") String request,
+                                @RequestParam(value = "error", required = false) String error,
                                 Model model) {
         model.addAttribute("request", request);
-        requestService.saveRequest(request, SecurityContextHolder.getContext().getAuthentication().getName());
+        if (request.isEmpty()) {
+            model.addAttribute("error", error != null);
+        } else {
+            requestService.saveRequest(request, SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         return "user-create-request.html";
     }
 
@@ -61,24 +58,44 @@ public class RequestController {
 
         //List<Role> roles=new ArrayList<>();
         //roles.add(new Role("ROLE_MASTER"));
-        model.addAttribute("masters", userService.findByRole("ROLE_MASTER"));
 
         return "manager-all-requests.html";
     }
 
-    @PostMapping(value = "/manager/new_requests")
-    public String makeAcceptedOrRejected(@RequestParam("id") long id,
-                               @RequestParam("master") String master,
-                               @RequestParam("reason") String reason,
-                               @RequestParam("price") Long price) {
-        log.info("in post method");
-        if (reason.isEmpty()) {
-            requestService.updateStatusAndMasterById("rejected", id, null, reason, null);
-            log.info("{}", "reject");
-        } else {
-            requestService.updateStatusAndMasterById("accepted", id, master, null, price);
-            log.info("{}", "accept");
+    @GetMapping(value = "/manager/new_requests/accept")
+    public String makeAccepted(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
+        requestDto.setId(id);
+        model.addAttribute("requestDto", requestDto);
+        log.info("{}", Long.valueOf(id));
+        model.addAttribute("masters", userService.findByRole("ROLE_MASTER"));
+        return "manager-accept-request.html";
+    }
+
+    @PostMapping(value = "/manager/new_requests/accept/req")
+    public String makeAccepted(Model model, RequestInfoDTO requestDto, BindingResult bindingResult) {
+        log.info("{}", requestDto.getId());
+        if (bindingResult.hasErrors()) {
+            return "manager-accept-request.html";
         }
+//            @RequestParam("id") long id,
+//            @RequestParam("master") String master,
+//            @RequestParam("price") Long price) {
+        log.info("in post method");
+
+        requestService.updateStatusAndMasterById("accepted", requestDto.getId(), requestDto.getMaster(), null, requestDto.getPrice());
+        log.info("{}", "accept");
+        return "redirect:/manager/new_requests";
+    }
+
+    @PostMapping(value = "/manager/new_requests/reject")
+    public String makeRejected(RequestInfoDTO requestDto) {
+//            @RequestParam("id") long id,
+//            @RequestParam("reason") String reason) {
+        log.info("in post method");
+
+        requestService.updateStatusAndMasterById("accepted", requestDto.getId(), null,
+                requestDto.getReason(), 0L);
+        log.info("{}", "reject");
         return "redirect:/manager/new_requests";
     }
 

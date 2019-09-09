@@ -60,7 +60,17 @@ public class RequestService {
     }
 
     public void updateStatusAndMasterById(String status, Long id, String master, String reason, Long price) {
-        requestRepository.updateStatusAndMasterById(status, id, userRepository.findIdByEmail(master).get(), reason, price);
+        Request tempRequest = requestRepository.findById(id).orElseThrow(RuntimeException::new);
+        requestRepository.save(Request.builder()
+                .id(id)
+                .creator(tempRequest.getCreator())
+                .request(tempRequest.getRequest())
+                .status(status)
+                .reason(reason)
+                .price(price)
+                .master(userRepository.findByEmail(master).get())
+                .build());
+        //requestRepository.updateStatusAndMasterById(status, id, userRepository.findByEmail(master).orElseThrow(RuntimeException::new), reason, price);
     }
 
     public List<Request> findAllRequests() {
@@ -72,9 +82,9 @@ public class RequestService {
         requestRepository.updateStatusById(status, id);
     }
 
-    public  List<Request> getRequestsByStatusAndEmail(String status, String email){
-        List<Request> requests =requestRepository.findByStatusAndEmail(email, status).orElseThrow(RuntimeException::new);
-        requests.stream().forEach(r->log.info(r.getRequest()));
+    public List<Request> getRequestsByStatusAndEmail(String status, String email) {
+        List<Request> requests = requestRepository.findByStatusAndEmail(email, status).orElseThrow(RuntimeException::new);
+        requests.stream().forEach(r -> log.info(r.getRequest()));
         return requests;
     }
 }

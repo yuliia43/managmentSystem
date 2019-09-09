@@ -2,6 +2,7 @@ package com.training.Trucking.repository;
 
 import com.training.Trucking.dto.RequestDTO;
 import com.training.Trucking.entity.Request;
+import com.training.Trucking.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,11 +20,15 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<List<Request>> findByStatus(String status);
 
+    Optional<String> findCreatorById(Long id);
+
+
+    @Transactional
     @Modifying
     @Query(value = "update Request r set r.status = :status and r.master_id=:master  and r.reason=:reason  and r.price=:price where r.id = :id", nativeQuery = true)
     void updateStatusAndMasterById(@Param("status") String status,
                                    @Param("id") Long id,
-                                   @Param("master")Long master_id,
+                                   @Param("master") User master,
                                    @Param("reason") String reason,
                                    @Param("price") Long price);
 

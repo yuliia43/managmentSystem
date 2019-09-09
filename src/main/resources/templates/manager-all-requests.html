@@ -54,49 +54,31 @@
 <div class="row">
     <div class="col">
         <div class="table-responsive">
-
             <table class="table">
                 <thead>
                 <tr>
                     <th>Request</th>
                     <th>Status</th>
-                    <th>Price</th>
-                    <th>Master</th>
-                    <th>Reason</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <div th:each="request: ${newRequests}" name="master" th:field="*{masters}">
+                <div th:each="request: ${newRequests}" >
                     <tr>
-                        <td th:text="${request.request} "></td>
+                        <td th:text="${request.request}"></td>
                         <td th:text="${request.status}"></td>
+<!--                        <td>-->
+<!--                            <input id="reason"-->
+<!--                                   type="text"-->
+<!--                                   class="form-control"-->
+<!--                                   placeholder="Reason"/>-->
+<!--                        </td>-->
                         <td>
-                            <input id="price"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="Price"/>
-                        </td>
-
-                        <td>
-                            <select id="mas">
-                                <option th:each="master:${masters}" th:text="${master.email}"
-                                        value="${master.email}"></option>
-                            </select>
-                        </td>
-
-                        <td>
-                            <input id="reason"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="Reason"/></td>
-
-                        <td>
-                            <button type="submit" onclick="process()" th:text="#{accept}"></button>
-                            <!--                                <a th:href="@{/manager/new_requests/accept(id=${request.id} & master=mas & price=pric & reason=reas}"-->
-                            <!--                                   th:text="#{accept}"><span>/</span></a>-->
-                            <!--                        <a th:href="@{/manager/new_request/accept(id=${request.id} }"-->
-                            <!--                    ></a>-->
+                            <a th:href="@{/manager/new_requests/accept?(id=${request.id})}">
+                                Accept
+                            </a>
+<!--                            <a href="#formAccept" class="accept">Accept</a>-->
+                            <a>Reject</a>
                         </td>
                     </tr>
                 </div>
@@ -132,13 +114,22 @@
     });
 </script>
 <script type="text/javascript">
-    function process() {
-        var url = "@{/manager/new_requests(id=${request.id} &" + document.getElementById("mas").value
-            + "& price=" + document.getElementById("price").value +
-            "& reason=" + document.getElementById("reason").value + ")}";
-        location.href = url;
-        return false;
-    }
+
+    // $(document).ready(function () {
+    //     $(".accept").magnificPopup();
+    //
+    // })
+
+    // $("#formAccept").submit(function (e)
+    // {
+    //     e.preventDefault;
+    //     $.ajax({
+    //         type:"POST",
+    //         url:"/manager/new_requests/accept}",
+    //         data:this.serialize()
+    //     });
+    //
+    // })
 </script>
 </body>
 
