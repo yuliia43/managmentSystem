@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+    <title>Reject request</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/css/styles4.min.css">
+</head>
+<body>
+<form  style="padding-top:75px" method="post" id="formAccept"  th:action="@{/manager/new_requests/reject/req}" th:object="${requestDto}">
+    <input id="price"
+           th:field="*{reason}"
+           type="text"
+           class="form-control"
+           placeholder="Price"/>
+    <input th:value="${param.id}" th:field="*{id}" type="hidden"/>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

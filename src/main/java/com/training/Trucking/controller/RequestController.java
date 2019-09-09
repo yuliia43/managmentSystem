@@ -63,7 +63,7 @@ public class RequestController {
     }
 
     @GetMapping(value = "/manager/new_requests/accept")
-    public String makeAccepted(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
+    public String getAcceptedId(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
         requestDto.setId(id);
         model.addAttribute("requestDto", requestDto);
         log.info("{}", Long.valueOf(id));
@@ -87,13 +87,19 @@ public class RequestController {
         return "redirect:/manager/new_requests";
     }
 
-    @PostMapping(value = "/manager/new_requests/reject")
+    @GetMapping(value = "/manager/new_requests/reject")
+    public String getRejectedId(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
+        requestDto.setId(id);
+        model.addAttribute("requestDto", requestDto);
+        return "manager-reject-request.html";
+    }
+    @PostMapping(value = "/manager/new_requests/reject/req")
     public String makeRejected(RequestInfoDTO requestDto) {
 //            @RequestParam("id") long id,
 //            @RequestParam("reason") String reason) {
         log.info("in post method");
 
-        requestService.updateStatusAndMasterById("accepted", requestDto.getId(), null,
+        requestService.updateStatusAndMasterById("rejected", requestDto.getId(), null,
                 requestDto.getReason(), 0L);
         log.info("{}", "reject");
         return "redirect:/manager/new_requests";

@@ -78,7 +78,7 @@
                                 Accept
                             </a>
 <!--                            <a href="#formAccept" class="accept">Accept</a>-->
-                            <a>Reject</a>
+                            <a th:href="@{/manager/new_requests/reject?(id=${request.id})}">Reject</a>
                         </td>
                     </tr>
                 </div>

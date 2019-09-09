@@ -51,8 +51,7 @@ public class RequestService {
     }
 
     public List<Request> getRequestsByStatus(String status) {
-        return requestRepository.findByStatus(status)
-                .orElseThrow(RuntimeException::new);
+        return requestRepository.findByStatus(status).get();
     }
 
     public Request findRequestById(Long id) {
@@ -68,7 +67,7 @@ public class RequestService {
                 .status(status)
                 .reason(reason)
                 .price(price)
-                .master(userRepository.findByEmail(master).get())
+                .master(userRepository.findByEmail(master).orElse(null))
                 .build());
         //requestRepository.updateStatusAndMasterById(status, id, userRepository.findByEmail(master).orElseThrow(RuntimeException::new), reason, price);
     }
