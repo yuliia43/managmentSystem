@@ -38,20 +38,23 @@ public class RequestService {
     }
 
     public List<RequestDTO> getRequestsByCreator(String creator) {
-        return requestRepository.findByCreator(creator)
-                .get().stream()
-                .map(r -> RequestDTO.builder()
-                        .request(r.getRequest())
-                        .id(r.getId())
-                        .status(r.getStatus())
-                        .reason(r.getReason())
-                        .price(r.getPrice())
-                        .build())
-                .collect(Collectors.toList());
+        if (requestRepository.findByCreator(creator).isPresent()) {
+            return requestRepository.findByCreator(creator)
+                    .get().stream()
+                    .map(r -> RequestDTO.builder()
+                            .request(r.getRequest())
+                            .id(r.getId())
+                            .status(r.getStatus())
+                            .reason(r.getReason())
+                            .price(r.getPrice())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     public List<Request> getRequestsByStatus(String status) {
-        return requestRepository.findByStatus(status).get();
+        return requestRepository.findByStatus(status).orElse(null);
     }
 
     public Request findRequestById(Long id) {

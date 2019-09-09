@@ -77,9 +77,7 @@ public class RequestController {
         if (bindingResult.hasErrors()) {
             return "manager-accept-request.html";
         }
-//            @RequestParam("id") long id,
-//            @RequestParam("master") String master,
-//            @RequestParam("price") Long price) {
+
         log.info("in post method");
 
         requestService.updateStatusAndMasterById("accepted", requestDto.getId(), requestDto.getMaster(), null, requestDto.getPrice());
@@ -95,13 +93,10 @@ public class RequestController {
     }
     @PostMapping(value = "/manager/new_requests/reject/req")
     public String makeRejected(RequestInfoDTO requestDto) {
-//            @RequestParam("id") long id,
-//            @RequestParam("reason") String reason) {
-        log.info("in post method");
 
         requestService.updateStatusAndMasterById("rejected", requestDto.getId(), null,
                 requestDto.getReason(), 0L);
-        log.info("{}", "reject");
+
         return "redirect:/manager/new_requests";
     }
 

@@ -38,11 +38,13 @@
 </nav>
 <div th:if="${param.error}">
     <div class="alert alert-danger" th:text="#{empty.value}">
+        <h2 name="${error}" th:text="#{empty.value}"></h2>
     </div>
     <div th:if="${param.logout}">
         <div class="alert alert-info">
         </div>
     </div>
+    <h2 th:if="${error}" th:text="${error}"></h2>
 </div>
 <div class="row">
     <div class="col">

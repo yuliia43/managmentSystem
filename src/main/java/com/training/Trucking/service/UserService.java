@@ -5,13 +5,11 @@ import com.training.Trucking.dto.UserDTO;
 import com.training.Trucking.dto.UsersDTO;
 import com.training.Trucking.entity.Role;
 import com.training.Trucking.entity.User;
-import com.training.Trucking.entity.UserAccount;
 import com.training.Trucking.repository.UserRepository;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,7 +57,6 @@ public class UserService implements UserDetailsService {
                     .enabled(true)
                     .firstName(userDTO.getName())
                     .surname(userDTO.getSurname())
-                    .userAccount(new UserAccount())
                     .roles(Arrays.asList(new Role(userDTO.getRole()))).build();
             try{
             userRepository.save(user);

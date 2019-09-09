@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public enum OrderStatus {
-    CREATED, PROCESSING, COMPLETED, REJECTED;
+public enum RequestStatus {
+    NEW, ACCEPTED, REJECTED, IN_PROGRESS, COMPLETED;
 }
