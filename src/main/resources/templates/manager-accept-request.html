@@ -10,21 +10,28 @@
     <link rel="stylesheet" href="/assets/css/styles4.min.css">
 </head>
 <body>
-<h1 th:text="#{accept.request}"/>
-<form  style="padding-top:75px" method="post" id="formAccept"  th:action="@{/manager/new_requests/accept/req}" th:object="${requestDto}">
-    <label th:text="#{price}"/>
-    <input id="price"
+<h1 th:text="#{accept.request}"></h1>
+
+<!--<div th:if="{#price.matches('[^0-9]+')}">-->
+<!--    <h2 th:text="#{not.numeric.value}"></h2>-->
+<!--</div>-->
+
+<form style="padding-top:75px" method="post" id="formAccept" th:action="@{/manager/new_requests/reject/req}"
+      th:object="${requestDto}">
+    <label th:text="#{price}"></label>
+    <input style="margin-left:20px; margin-right: 20px;" id="price"
            th:field="*{price}"
            type="text"
-           class="form-control"/>
+           class="form-control"
+           pattern="[0-9]+"/>
     <input th:value="${param.id}" th:field="*{id}" type="hidden"/>
 
-    <label th:text="#{master}"/>
+    <label th:text="#{master}"></label>
     <select id="mas" th:field="*{master}">
-        <option  th:each="master:${masters}" th:value="${master.email}" th:text="${master.email}"></option>
+        <option th:each="master:${masters}" th:value="${master.email}" th:text="${master.email}"></option>
     </select>
 
-    <button type="submit" th:text="#{accept}"/>
+    <button type="submit" th:text="#{accept}"></button>
 </form>
 </body>
 </html>

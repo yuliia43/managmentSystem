@@ -6,21 +6,23 @@ import com.training.RepAgency.service.RequestService;
 import com.training.RepAgency.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 @Slf4j
 @Controller
 public class RequestController {
     @Autowired
     RequestService requestService;
+
 
     @Autowired
     UserService userService;
@@ -44,16 +46,16 @@ public class RequestController {
     }
 
     @GetMapping("/user/all_requests")
-    public String getAllRequestsPage(Model model) {
+    public String getAllRequestsPage(Model model, Pageable pageable) {
         model.addAttribute("userRequest", requestService.getRequestsByCreator(SecurityContextHolder.getContext()
-                .getAuthentication().getName()));
+                .getAuthentication().getName(), pageable));
         return "user-all-requests.html";
     }
 
     @GetMapping(value = "/manager/new_requests")
-    public String getAdminCabinet(Model model) {
+    public String getAdminCabinet(Model model,@SortDefault("request") Pageable pageable) {
 
-        List<Request> requests = requestService.getRequestsByStatus("new");
+        Page<Request> requests =  requestService.getRequestsByStatus("new", pageable);
         model.addAttribute("newRequests", requests);
 
         return "manager-all-requests.html";
@@ -63,20 +65,17 @@ public class RequestController {
     public String getAcceptedId(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
         requestDto.setId(id);
         model.addAttribute("requestDto", requestDto);
-        log.info("{}", Long.valueOf(id));
+        log.info("{}", id);
         model.addAttribute("masters", userService.findByRole("ROLE_MASTER"));
         return "manager-accept-request.html";
     }
 
     @PostMapping(value = "/manager/new_requests/accept/req")
-    public String makeAccepted(Model model, RequestInfoDTO requestDto, BindingResult bindingResult) {
+    public String makeAccepted(Model model,RequestInfoDTO requestDto) {
         log.info("{}", requestDto.getId());
-        if (bindingResult.hasErrors()) {
-            return "manager-accept-request.html";
-        }
 
-
-        requestService.updateStatusAndMasterById("accepted", requestDto.getId(), requestDto.getMaster(), null, requestDto.getPrice());
+        requestService.updateStatusAndMasterById("accepted", requestDto.getId(), requestDto.getMaster(), null,
+               requestDto.getPrice());
         log.info("{}", "accept");
         return "redirect:/manager/new_requests";
     }
@@ -97,12 +96,12 @@ public class RequestController {
     }
 
     @GetMapping(value = "/master/new_requests")
-    public String getAcceptedRequests(Model model) {
+    public String getAcceptedRequests(Model model, Pageable pageable) {
         try {
             log.info(SecurityContextHolder.getContext().getAuthentication().getName());
 
             model.addAttribute("newRequests", requestService.getRequestsByStatusAndEmail("accepted",
-                    SecurityContextHolder.getContext().getAuthentication().getName()));
+                    SecurityContextHolder.getContext().getAuthentication().getName(), pageable));
 
         } catch (Exception e) {
             model.addAttribute("error", "You have not requests");
@@ -117,12 +116,12 @@ public class RequestController {
     }
 
     @GetMapping(value = "/master/in_progress_requests")
-    public String getInProgressRequests(Model model) {
+    public String getInProgressRequests(Model model, Pageable pageable) {
         try {
             log.info(SecurityContextHolder.getContext().getAuthentication().getName());
 
             model.addAttribute("inProgressRequests", requestService.getRequestsByStatusAndEmail("in progress",
-                    SecurityContextHolder.getContext().getAuthentication().getName()));
+                    SecurityContextHolder.getContext().getAuthentication().getName(), pageable));
 
         } catch (Exception e) {
             model.addAttribute("error", "You have not requests");
@@ -138,12 +137,12 @@ public class RequestController {
 
 
     @GetMapping(value = "/master/completed_requests")
-    public String getCompletedRequests(Model model) {
+    public String getCompletedRequests(Model model, Pageable pageable) {
         try {
             log.info(SecurityContextHolder.getContext().getAuthentication().getName());
 
             model.addAttribute("completedRequests", requestService.getRequestsByStatusAndEmail("completed",
-                    SecurityContextHolder.getContext().getAuthentication().getName()));
+                    SecurityContextHolder.getContext().getAuthentication().getName(), pageable));
 
         } catch (Exception e) {
             model.addAttribute("error", "You have not requests");

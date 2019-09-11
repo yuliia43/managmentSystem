@@ -56,7 +56,7 @@
         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
     </div>
 </div>
-<div class="row">
+<div style="margin-left:20px; margin-right: 20px;" class="row">
     <div class="col">
         <div class="table-responsive">
 
@@ -82,6 +82,20 @@
             </table>
 
         </div>
+    </div>
+</div>
+<div  th:if="${newRequests!=null}" class="row">
+    <!--                <div class="col-sm-6">-->
+    <!--                    <div sd:pagination-summary="">info</div>-->
+    <!--                </div>-->
+    <div class="col-sm-6">
+        <nav class="pull-right">
+            <ul class="pagination" sd:pagination="full" sd:pagination-split="6">
+                <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </nav>
     </div>
 </div>
 <script src="/assets/js/jquery.min.js"></script>

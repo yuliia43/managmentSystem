@@ -2,6 +2,8 @@ package com.training.RepAgency.repository;
 
 import com.training.RepAgency.entity.Request;
 import com.training.RepAgency.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,19 +18,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<List<Request>> findByCreator(String creator);
 
-    Optional<List<Request>> findByStatus(String status);
-
-    Optional<String> findCreatorById(Long id);
-
-
-    @Transactional
-    @Modifying
-    @Query(value = "update Request r set r.status = :status and r.master_id=:master  and r.reason=:reason  and r.price=:price where r.id = :id", nativeQuery = true)
-    void updateStatusAndMasterById(@Param("status") String status,
-                                   @Param("id") Long id,
-                                   @Param("master") User master,
-                                   @Param("reason") String reason,
-                                   @Param("price") Long price);
+    Page<Request> findByStatus(String status, Pageable pageable);
 
     @Transactional
     @Modifying
@@ -39,6 +29,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query(value = "SELECT r.* FROM trucking.request r inner join trucking.user u on r.master_id=u.id " +
             "where u.email=:email and r.status=:status",
             nativeQuery = true)
-    Optional<List<Request>> findByStatusAndEmail(@Param("email")String email,
-                                                 @Param("status") String status);
+    Page<Request> findByStatusAndEmail(@Param("email")String email,
+                                                 @Param("status") String status, Pageable pageable);
 }
