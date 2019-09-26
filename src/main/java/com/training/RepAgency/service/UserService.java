@@ -51,15 +51,15 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(UserDTO userDTO) {
 
-            User user = User.builder().email(userDTO.getEmail())
+
+            try{
+            userRepository.save(User.builder().email(userDTO.getEmail())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .isBanned(false)
                     .enabled(true)
                     .firstName(userDTO.getName())
                     .surname(userDTO.getSurname())
-                    .roles(Arrays.asList(new Role(userDTO.getRole()))).build();
-            try{
-            userRepository.save(user);
+                    .roles(Arrays.asList(new Role(userDTO.getRole()))).build());
         } catch (Exception ex) {
             log.info("{Почтовый адрес уже существует}");
         }
@@ -101,11 +101,9 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-      public List<User> findByRole(String role){
-        List <User> masters=userRepository.findByRole(role)
+      public List<String> findByRole(String role){
+        return userRepository.findEmailByRole(role)
                 .orElseThrow(RuntimeException::new);
-        masters.stream().forEach(r->log.info("{}",r.getEmail()));
-        return masters;
     }
 }
 

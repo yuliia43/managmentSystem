@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:sd="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -31,14 +31,7 @@
                         class="nav-link"
                         href="/user/create_comment" th:text="#{create_comment}"></a>
                 </li>
-                <!--                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"-->
-                <!--                                                                                                  href="/admin/users"-->
-                <!--                                                                                                  th:text="#{nav.usersList}"></a>-->
-                <!--                </li>-->
-                <!--                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"-->
-                <!--                                                                                                  href="/admin/cabinet"-->
-                <!--                                                                                                  th:text="#{orders}"></a>-->
-                <!--                </li>-->
+
             </ul>
             <span class="navbar-text actions"> <a class="login" th:href="@{/logout}" th:text="#{nav.logout}"></a></span>
             <button class="btn" type="button" id="locales" value="uk"
@@ -64,7 +57,7 @@
             <strong></strong></p>
     </div>
 </div>
-<div  style="margin-left:20px; margin-right: 20px;" class="row">
+<div style="margin-left:20px; margin-right: 20px;" class="row">
     <div class="col">
         <div class="table-responsive">
             <table class="table">
@@ -91,7 +84,7 @@
     </div>
 </div>
 
-<div  th:if="${userRequest!=null}" class="row">
+<div th:if="${userRequest!=null}" class="row">
     <!--                <div class="col-sm-6">-->
     <!--                    <div sd:pagination-summary="">info</div>-->
     <!--                </div>-->
@@ -105,6 +98,41 @@
         </nav>
     </div>
 </div>
+
+<div class="row">
+    <div class="col">
+        <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;"
+           th:text="#{my.requests.rejected}">
+            <strong></strong></p>
+    </div>
+</div>
+
+<div style="margin-left:20px; margin-right: 20px;" class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Request</th>
+                    <th>Status</th>
+                    <th>Rejection reason<br/>
+                        (if status is rejected)
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${rejectedRequests}">
+                    <td th:text="${user.request} "></td>
+                    <td th:text="${user.status}"></td>
+                    <td th:text="${user.reason}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/script.min.js"></script>

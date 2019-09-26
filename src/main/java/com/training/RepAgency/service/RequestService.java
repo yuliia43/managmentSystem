@@ -1,7 +1,6 @@
 package com.training.RepAgency.service;
 
 import com.training.RepAgency.dto.RequestDTO;
-import com.training.RepAgency.dto.RequestInfoDTO;
 import com.training.RepAgency.entity.Request;
 import com.training.RepAgency.repository.RequestRepository;
 import com.training.RepAgency.repository.UserRepository;
@@ -12,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,21 +41,25 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
-    public Page<RequestDTO> getRequestsByCreator(String creator, Pageable pageable) {
-        if (requestRepository.findByCreator(creator).isPresent()) {
-            List<RequestDTO> temp= requestRepository.findByCreator(creator)
-                    .get().stream()
-                    .map(r -> RequestDTO.builder()
-                            .request(r.getRequest())
-                            .id(r.getId())
-                            .status(r.getStatus())
-                            .reason(r.getReason())
-                            .price(r.getPrice())
-                            .build())
-                    .collect(Collectors.toList());
-            return new PageImpl<RequestDTO>(temp);
-        }
-        return null;
+
+    public Page<RequestDTO> getRequestsByCreator(String creator, String status, Pageable pageable) {
+
+
+        return requestRepository.findByCreatorAndStatusNot(creator, status)
+                .<Page<RequestDTO>>map(requests -> new PageImpl<>(requests.stream()
+                .map(this::buildRequest)
+                .collect(Collectors.toList())))
+                .orElseThrow(RuntimeException::new);
+    }
+
+    public RequestDTO buildRequest(Request r) {
+        return RequestDTO.builder()
+                .request(r.getRequest())
+                .id(r.getId())
+                .status(r.getStatus())
+                .reason(r.getReason())
+                .price(r.getPrice())
+                .build();
     }
 
     public Page<Request> getRequestsByStatus(String status, Pageable pageable) {
@@ -78,7 +82,6 @@ public class RequestService {
                 .price(price)
                 .master(userRepository.findByEmail(master).orElse(null))
                 .build());
-        //requestRepository.updateStatusAndMasterById(status, id, userRepository.findByEmail(master).orElseThrow(RuntimeException::new), reason, price);
     }
 
 
@@ -86,7 +89,15 @@ public class RequestService {
         requestRepository.updateStatusById(status, id);
     }
 
+    public void updateStatusAndReasonById(String status, Long id, String reason) {
+        requestRepository.updateStatusAndReasonById(status, id, reason);
+    }
+
     public Page<Request> getRequestsByStatusAndEmail(String status, String email, Pageable pageable) {
         return requestRepository.findByStatusAndEmail(email, status, pageable);
+    }
+
+    public Optional<List<Request>> getByCreatorAndStatus(String creator, String status) {
+        return requestRepository.findByCreatorAndStatus(creator, status);
     }
 }

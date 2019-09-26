@@ -23,4 +23,7 @@ public class Comment {
 
     @ManyToOne()
     User user;
+
+//    @OneToOne
+   // Request request;
 }

@@ -33,8 +33,4 @@ public class User {
     @JoinTable
     private Collection<Role> roles;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private UserAccount userAccount;
-
-
 }

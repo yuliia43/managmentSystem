@@ -24,6 +24,7 @@ public class CommentController {
         return "user-create-comment.html";
     }
 
+    //        return hash;if ( фабрика) хешер
     @PostMapping("/user/create_comment")
     public String createComment(@RequestParam("comment") String comment,
                                 @RequestParam(value = "error", required = false) String error,
@@ -41,11 +42,7 @@ public class CommentController {
                             .getName())
                     .build());
         }
-        //ConfirmationToken confirmationToken = new ConfirmationToken(userService.findByEmail(userDTO.getEmail()).get());
-        //confirmationTokenService.save(confirmationToken);
-        //emailSenderService.sendEmail(userDTO.getEmail(), confirmationToken);
         return "user-create-comment.html";
-        //return "account-need-verification.html";
     }
 
     @GetMapping("/manager/all_comments")
@@ -53,6 +50,4 @@ public class CommentController {
         model.addAttribute("comments", commentService.getAllComments());
         return "manager-all-comments.html";
     }
-
-
 }

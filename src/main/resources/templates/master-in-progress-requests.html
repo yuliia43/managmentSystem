@@ -75,7 +75,8 @@
                         <td th:text="${request.request} "></td>
                         <td th:text="${request.status}"></td>
                         <td th:text="${request.price}"></td>
-                        <td><a th:href="@{/master/in_progress_requests/completed(id=${request.id})}">Make completed</a></td>
+                        <td><a th:href="@{/master/in_progress_requests/completed(id=${request.id})}">Make completed</a>
+                            <a th:href="@{/master/in_progress_requests/beyond_repair(id=${request.id})}">Make beyand repair</a></td>
                     </tr>
                 </div>
                 </tbody>

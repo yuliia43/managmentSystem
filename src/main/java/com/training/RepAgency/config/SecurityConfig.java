@@ -34,12 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**",
                         "/css/**",
                         "/img/**",
-                        "/webjars/**",
-                        "/style.css",
-                        "/confirm-account/**",
-                        "/confirm-account").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER","MANAGER","MASTER")
+                        "/style.css").permitAll()
+                //.antMatchers("/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "MANAGER", "MASTER")
                 .antMatchers("/manager/**").hasAnyRole("MANAGER")
                 .antMatchers("/master/**").hasAnyRole("MASTER")
                 .anyRequest().authenticated()
@@ -70,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth)  {
         auth.authenticationProvider(authenticationProvider());
     }
 

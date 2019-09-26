@@ -16,16 +16,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.stream.Collectors;
+
 
 @Slf4j
 @Controller
 public class RequestController {
     @Autowired
-    RequestService requestService;
+    private RequestService requestService;
 
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/user/create_request")
     public String getCreateRequestPage(Model model) {
@@ -48,14 +50,19 @@ public class RequestController {
     @GetMapping("/user/all_requests")
     public String getAllRequestsPage(Model model, Pageable pageable) {
         model.addAttribute("userRequest", requestService.getRequestsByCreator(SecurityContextHolder.getContext()
-                .getAuthentication().getName(), pageable));
+                .getAuthentication().getName(),"rejected", pageable));
+
+        requestService.getByCreatorAndStatus(
+                SecurityContextHolder.getContext()
+                        .getAuthentication().getName(), "rejected")
+                .ifPresent(r->model.addAttribute("rejectedRequests",r));
         return "user-all-requests.html";
     }
 
     @GetMapping(value = "/manager/new_requests")
-    public String getAdminCabinet(Model model,@SortDefault("request") Pageable pageable) {
+    public String getAdminCabinet(Model model, @SortDefault("request") Pageable pageable) {
 
-        Page<Request> requests =  requestService.getRequestsByStatus("new", pageable);
+        Page<Request> requests = requestService.getRequestsByStatus("new", pageable);
         model.addAttribute("newRequests", requests);
 
         return "manager-all-requests.html";
@@ -71,11 +78,11 @@ public class RequestController {
     }
 
     @PostMapping(value = "/manager/new_requests/accept/req")
-    public String makeAccepted(Model model,RequestInfoDTO requestDto) {
+    public String makeAccepted(Model model, RequestInfoDTO requestDto) {
         log.info("{}", requestDto.getId());
 
         requestService.updateStatusAndMasterById("accepted", requestDto.getId(), requestDto.getMaster(), null,
-               requestDto.getPrice());
+                requestDto.getPrice());
         log.info("{}", "accept");
         return "redirect:/manager/new_requests";
     }
@@ -86,6 +93,7 @@ public class RequestController {
         model.addAttribute("requestDto", requestDto);
         return "manager-reject-request.html";
     }
+
     @PostMapping(value = "/manager/new_requests/reject/req")
     public String makeRejected(RequestInfoDTO requestDto) {
 
@@ -132,6 +140,11 @@ public class RequestController {
     @GetMapping(value = "/master/in_progress_requests/completed")
     public String makeRequestCompleted(@RequestParam("id") long id) {
         requestService.updateStatusById("completed", id);
+        return "redirect:/master/in_progress_requests";
+    }
+    @GetMapping(value = "/master/in_progress_requests/beyond_repair")
+    public String makeRequestBeyondRepair(@RequestParam("id") long id) {
+        requestService.updateStatusAndReasonById("rejected", id,"beyond repair");
         return "redirect:/master/in_progress_requests";
     }
 

@@ -16,7 +16,7 @@
 <!--    <h2 th:text="#{not.numeric.value}"></h2>-->
 <!--</div>-->
 
-<form style="padding-top:75px" method="post" id="formAccept" th:action="@{/manager/new_requests/reject/req}"
+<form style="padding-top:75px" method="post" id="formAccept" th:action="@{/manager/new_requests/accept/req}"
       th:object="${requestDto}">
     <label th:text="#{price}"></label>
     <input style="margin-left:20px; margin-right: 20px;" id="price"
@@ -28,7 +28,7 @@
 
     <label th:text="#{master}"></label>
     <select id="mas" th:field="*{master}">
-        <option th:each="master:${masters}" th:value="${master.email}" th:text="${master.email}"></option>
+        <option th:each="master:${masters}" th:value="${master}" th:text="${master}"></option>
     </select>
 
     <button type="submit" th:text="#{accept}"></button>
