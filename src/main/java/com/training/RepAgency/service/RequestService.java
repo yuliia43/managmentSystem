@@ -29,7 +29,7 @@ public class RequestService {
         this.userRepository = userRepository;
     }
 
-    public boolean saveRequest(String request, String name) {
+    public Request saveRequest(String request, String name) {
         return requestRepository.save(
                 Request.builder()
                         .request(request)
@@ -37,7 +37,7 @@ public class RequestService {
                         .price(0L)
                         .creator(name)
                         .build()
-        )==null;
+        );
     }
 
     public Optional<Request> saveRequest(Request request) {
