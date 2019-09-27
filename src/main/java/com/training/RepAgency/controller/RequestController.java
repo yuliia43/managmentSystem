@@ -22,12 +22,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 public class RequestController {
-    @Autowired
-    private RequestService requestService;
+    private final RequestService requestService;
+    private final UserService userService;
 
-
-    @Autowired
-    private UserService userService;
+    public RequestController(RequestService requestService, UserService userService) {
+        this.requestService = requestService;
+        this.userService = userService;
+    }
 
     @GetMapping("/user/create_request")
     public String getCreateRequestPage(Model model) {

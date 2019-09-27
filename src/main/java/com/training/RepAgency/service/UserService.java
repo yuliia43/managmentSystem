@@ -9,7 +9,6 @@ import com.training.RepAgency.repository.UserRepository;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,11 +28,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -49,10 +48,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public void saveUser(UserDTO userDTO) {
-
-
-            try{
+    public boolean saveUser(UserDTO userDTO) {
+        try {
             userRepository.save(User.builder().email(userDTO.getEmail())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .isBanned(false)
@@ -60,23 +57,33 @@ public class UserService implements UserDetailsService {
                     .firstName(userDTO.getName())
                     .surname(userDTO.getSurname())
                     .roles(Arrays.asList(new Role(userDTO.getRole()))).build());
+
         } catch (Exception ex) {
             log.info("{Почтовый адрес уже существует}");
+            return false;
         }
+        return true;
     }
 
-    public void saveUser(User user) {
+    boolean saveUser(User user) {
         try {
+            if (userRepository.findByEmail(user.getEmail()).get()!=null) {
+                return false;
+            }
             userRepository.save(user);
         } catch (Exception ex) {
             log.info("{Почтовый адрес уже существует}");
+            return false;
         }
+        return true;
     }
 
-    public void updatePassword(UserDTO userDTO) {
+    public boolean updatePassword(UserDTO userDTO) {
         User user = userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
                 new UsernameNotFoundException("user " + userDTO.getEmail() + " was not found!"));
+
         userRepository.updatePasswordById(passwordEncoder.encode(userDTO.getPassword()), user.getId());
+        return true;
     }
 
     @Override
@@ -101,7 +108,7 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-      public List<String> findByRole(String role){
+    public List<String> findByRole(String role) {
         return userRepository.findEmailByRole(role)
                 .orElseThrow(RuntimeException::new);
     }

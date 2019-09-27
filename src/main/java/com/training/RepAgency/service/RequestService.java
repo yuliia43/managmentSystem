@@ -20,13 +20,16 @@ import java.util.stream.Collectors;
 @Service
 public class RequestService {
 
-    @Autowired
-    private RequestRepository requestRepository;
+    private final RequestRepository requestRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public Request saveRequest(String request, String name) {
+    public RequestService(RequestRepository requestRepository, UserRepository userRepository) {
+        this.requestRepository = requestRepository;
+        this.userRepository = userRepository;
+    }
+
+    public boolean saveRequest(String request, String name) {
         return requestRepository.save(
                 Request.builder()
                         .request(request)
@@ -34,11 +37,11 @@ public class RequestService {
                         .price(0L)
                         .creator(name)
                         .build()
-        );
+        )==null;
     }
 
-    public Request saveRequest(Request request) {
-        return requestRepository.save(request);
+    public Optional<Request> saveRequest(Request request) {
+        return Optional.ofNullable(requestRepository.save(request));
     }
 
 
@@ -52,7 +55,7 @@ public class RequestService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public RequestDTO buildRequest(Request r) {
+    private RequestDTO buildRequest(Request r) {
         return RequestDTO.builder()
                 .request(r.getRequest())
                 .id(r.getId())

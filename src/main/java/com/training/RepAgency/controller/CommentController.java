@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -15,8 +14,11 @@ import java.time.LocalDate;
 @Controller
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping("/user/create_comment")
     public String getCreateRequestPage(Model model) {
@@ -24,8 +26,7 @@ public class CommentController {
         return "user-create-comment.html";
     }
 
-    //        return hash;if ( фабрика) хешер
-    @PostMapping("/user/create_comment")
+    //TODO: ping("/user/create_comment")
     public String createComment(@RequestParam("comment") String comment,
                                 @RequestParam(value = "error", required = false) String error,
                                 Model model) {
@@ -37,9 +38,7 @@ public class CommentController {
                     .comment(comment)
                     .date(LocalDate.now())
                     .username(SecurityContextHolder
-                            .getContext()
-                            .getAuthentication()
-                            .getName())
+                            .getContext().getAuthentication().getName())
                     .build());
         }
         return "user-create-comment.html";
