@@ -48,12 +48,8 @@
         </div>
     </div>
 </nav>
-<div th:if="${param.error}">
-    <div class="alert alert-danger" th:text="#{empty.value}">
-    </div>
-    <div th:if="${param.logout}">
-        <div class="alert alert-info">
-        </div>
+<div th:if="${param.success}">
+    <div class="alert alert-primary" th:text="#{created}">
     </div>
 </div>
 <div  style="margin:0 auto;" class="row justify-content-center align-items-center align-content-center align-self-center">

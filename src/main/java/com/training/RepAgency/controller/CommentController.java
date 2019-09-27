@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class CommentController {
     }
 
     //TODO: ping("/user/create_comment")
+    @PostMapping("/user/create_comment")
     public String createComment(@RequestParam("comment") String comment,
                                 @RequestParam(value = "error", required = false) String error,
                                 Model model) {
@@ -40,6 +42,7 @@ public class CommentController {
                     .username(SecurityContextHolder
                             .getContext().getAuthentication().getName())
                     .build());
+            model.addAttribute("success", true);
         }
         return "user-create-comment.html";
     }

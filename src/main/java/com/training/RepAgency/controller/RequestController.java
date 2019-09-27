@@ -5,7 +5,6 @@ import com.training.RepAgency.entity.Request;
 import com.training.RepAgency.service.RequestService;
 import com.training.RepAgency.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.stream.Collectors;
+
 
 
 @Slf4j
@@ -44,6 +43,7 @@ public class RequestController {
             model.addAttribute("error", error != null);
         } else {
             requestService.saveRequest(request, SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("success", true);
         }
         return "user-create-request.html";
     }
