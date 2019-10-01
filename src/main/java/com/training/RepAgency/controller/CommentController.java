@@ -27,7 +27,6 @@ public class CommentController {
         return "user-create-comment.html";
     }
 
-    //TODO: ping("/user/create_comment")
     @PostMapping("/user/create_comment")
     public String createComment(@RequestParam("comment") String comment,
                                 @RequestParam(value = "error", required = false) String error,
