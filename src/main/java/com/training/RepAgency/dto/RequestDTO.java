@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Builder
 @Getter
@@ -21,10 +22,8 @@ public class RequestDTO {
     @NotNull(message = "{not.null}")
     String  status;
 
-    @NotNull(message = "{not.null}")
-    Long price;
 
     @NotNull(message = "{not.null}")
-    String  reason;
+    Date deadline;
 
 }

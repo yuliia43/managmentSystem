@@ -30,19 +30,22 @@ public class RequestController {
     }
 
     @GetMapping("/user/create_request")
-    public String getCreateRequestPage(Model model) {
+    public String getCreateRequestPage(Model model, RequestInfoDTO requestDto) {
+        model.addAttribute("masters", userService.findByRole("ROLE_MASTER"));
+        model.addAttribute("requestDto", requestDto);
         return "user-create-request.html";
     }
 
     @PostMapping("/user/create_request")
-    public String createRequest(@RequestParam("request") String request,
-                                @RequestParam(value = "error", required = false) String error,
-                                Model model) {
+    public String createRequest(@RequestParam(value = "error", required = false) String error,
+                                Model model, RequestInfoDTO requestDto) {
+        String request = requestDto.getRequest();
         model.addAttribute("request", request);
         if (request.isEmpty()) {
             model.addAttribute("error", error != null);
         } else {
-            requestService.saveRequest(request, SecurityContextHolder.getContext().getAuthentication().getName());
+            requestService.saveRequest(request, requestDto.getDeadline(),
+                    SecurityContextHolder.getContext().getAuthentication().getName(), requestDto.getMaster());
             model.addAttribute("success", true);
         }
         return "user-create-request.html";
@@ -69,16 +72,16 @@ public class RequestController {
         return "manager-all-requests.html";
     }
 
-    @GetMapping(value = "/manager/new_requests/accept")
+   /* @GetMapping(value = "/manager/new_requests/accept")
     public String getAcceptedId(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
         requestDto.setId(id);
         model.addAttribute("requestDto", requestDto);
         log.info("{}", id);
         model.addAttribute("masters", userService.findByRole("ROLE_MASTER"));
         return "manager-accept-request.html";
-    }
+    }*/
 
-    @PostMapping(value = "/manager/new_requests/accept/req")
+   /* @PostMapping(value = "/manager/new_requests/accept/req")
     public String makeAccepted(Model model, RequestInfoDTO requestDto) {
         log.info("{}", requestDto.getId());
 
@@ -86,23 +89,23 @@ public class RequestController {
                 requestDto.getPrice());
         log.info("{}", "accept");
         return "redirect:/manager/new_requests";
-    }
+    }*/
 
-    @GetMapping(value = "/manager/new_requests/reject")
+    /*@GetMapping(value = "/manager/new_requests/reject")
     public String getRejectedId(@RequestParam("id") long id, RequestInfoDTO requestDto, Model model) {
         requestDto.setId(id);
         model.addAttribute("requestDto", requestDto);
         return "manager-reject-request.html";
-    }
+    }*/
 
-    @PostMapping(value = "/manager/new_requests/reject/req")
+    /*@PostMapping(value = "/manager/new_requests/reject/req")
     public String makeRejected(RequestInfoDTO requestDto) {
 
         requestService.updateStatusAndMasterById("rejected", requestDto.getId(), null,
-                requestDto.getReason(), 0L);
+                requestDto.getDeadline(), 0L);
 
         return "redirect:/manager/new_requests";
-    }
+    }*/
 
     @GetMapping(value = "/master/new_requests")
     public String getAcceptedRequests(Model model, Pageable pageable) {

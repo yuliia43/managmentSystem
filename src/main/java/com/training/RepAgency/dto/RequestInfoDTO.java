@@ -2,6 +2,8 @@ package com.training.RepAgency.dto;
 
 import lombok.*;
 
+import java.sql.Date;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -9,11 +11,10 @@ import lombok.*;
 @Setter
 public class RequestInfoDTO {
 
-    long id;
+    String request;
 
     String master;
 
-    long price;
+    Date deadline;
 
-    String  reason;
 }
