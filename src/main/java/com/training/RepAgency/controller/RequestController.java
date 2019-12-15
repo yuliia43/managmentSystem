@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import java.sql.Date;
 
 
 @Slf4j
@@ -48,18 +48,18 @@ public class RequestController {
                     SecurityContextHolder.getContext().getAuthentication().getName(), requestDto.getMaster());
             model.addAttribute("success", true);
         }
-        return "user-create-request.html";
+        return "redirect:/user/create_request";
     }
 
     @GetMapping("/user/all_requests")
     public String getAllRequestsPage(Model model, Pageable pageable) {
         model.addAttribute("userRequest", requestService.getRequestsByCreator(SecurityContextHolder.getContext()
-                .getAuthentication().getName(),"rejected", pageable));
+                .getAuthentication().getName(),"finished", pageable));
 
         requestService.getByCreatorAndStatus(
                 SecurityContextHolder.getContext()
-                        .getAuthentication().getName(), "rejected")
-                .ifPresent(r->model.addAttribute("rejectedRequests",r));
+                        .getAuthentication().getName(), "finished")
+                .ifPresent(r->model.addAttribute("finishedRequests",r));
         return "user-all-requests.html";
     }
 

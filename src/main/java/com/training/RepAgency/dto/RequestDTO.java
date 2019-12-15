@@ -1,5 +1,6 @@
 package com.training.RepAgency.dto;
 
+import com.training.RepAgency.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,9 @@ public class RequestDTO {
     @NotNull(message = "{not.null}")
     Date deadline;
 
+    @NotNull(message = "{not.null}")
+    User master;
+
+
+    Date finishedDate;
 }

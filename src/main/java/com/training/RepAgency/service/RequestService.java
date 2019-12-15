@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,7 @@ public class RequestService {
                 .id(r.getId())
                 .status(r.getStatus())
                 .deadline(r.getDeadline())
+                .master(r.getMaster())
                 .build();
     }
 

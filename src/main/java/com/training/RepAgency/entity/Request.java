@@ -22,8 +22,13 @@ public class Request {
     String status;
     Date deadline;
     String creator;
+    Date finishedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_id")
+    User master;*/
+
+    @ManyToOne()
     @JoinColumn(name = "master_id")
     User master;
 
