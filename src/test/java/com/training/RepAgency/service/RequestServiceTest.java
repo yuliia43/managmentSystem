@@ -33,7 +33,7 @@ public class RequestServiceTest {
         Mockito.verify(requestRepository, Mockito.times(1)).save(request);
     }
 
-    @Test
+    /*@Test
     public void updateStatusAndMasterById() {
         Request request = new Request();
         request.setId(1L);
@@ -44,7 +44,7 @@ public class RequestServiceTest {
         requestService.updateStatusAndMasterById("new",request.getId(),"master","reason",450L);
         Mockito.verify(requestRepository, Mockito.times(1)).findById(request.getId());
 
-    }
+    }*/
 
     @Test
     public void updateStatusById() {

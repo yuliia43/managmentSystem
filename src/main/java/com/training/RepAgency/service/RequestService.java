@@ -2,16 +2,18 @@ package com.training.RepAgency.service;
 
 import com.training.RepAgency.dto.RequestDTO;
 import com.training.RepAgency.entity.Request;
+import com.training.RepAgency.entity.User;
 import com.training.RepAgency.repository.RequestRepository;
 import com.training.RepAgency.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,12 +31,13 @@ public class RequestService {
         this.userRepository = userRepository;
     }
 
-    public Request saveRequest(String request, String name) {
+    public Request saveRequest(String request, Date deadline, String name, String master) {
         return requestRepository.save(
                 Request.builder()
                         .request(request)
                         .status("new")
-                        .price(0L)
+                        .deadline(deadline)
+                        .master(userRepository.findByEmail(master).orElse(null))
                         .creator(name)
                         .build()
         );
@@ -60,8 +63,8 @@ public class RequestService {
                 .request(r.getRequest())
                 .id(r.getId())
                 .status(r.getStatus())
-                .reason(r.getReason())
-                .price(r.getPrice())
+                .deadline(r.getDeadline())
+                .master(r.getMaster())
                 .build();
     }
 
@@ -74,18 +77,18 @@ public class RequestService {
         return requestRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    public void updateStatusAndMasterById(String status, Long id, String master, String reason, Long price) {
+    /*public void updateStatusAndMasterById(String status, Long id, String master, String reason, Long price) {
         Request tempRequest = requestRepository.findById(id).orElseThrow(RuntimeException::new);
         requestRepository.save(Request.builder()
                 .id(id)
                 .creator(tempRequest.getCreator())
                 .request(tempRequest.getRequest())
                 .status(status)
-                .reason(reason)
+                .deadline(reason)
                 .price(price)
                 .master(userRepository.findByEmail(master).orElse(null))
                 .build());
-    }
+    }*/
 
 
     public void updateStatusById(String status, Long id) {

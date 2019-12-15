@@ -52,16 +52,27 @@
     <div class="alert alert-primary" th:text="#{created}">
     </div>
 </div>
-<div  style="margin:0 auto;" class="row justify-content-center align-items-center align-content-center align-self-center">
+<div  style="width: 600px; margin:auto;" class="row justify-content-center align-items-center align-content-center align-self-center">
     <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden"/>
     <div class="col" style="width: 404px;">
-        <form  th:action="@{/user/create_request}"
-              method="post">
-            <label th:text="#{new_request}"/>
+        <h3 th:text="#{new_request}"/>
+        <form th:action="@{/user/create_request}"
+              method="post"
+               th:object="${requestDto}">
+            <label th:text="#{task}"/>
+            <label style="padding-left: 50px" th:text="#{forUser}"></label>
+            <select id="mas" th:field="*{master}">
+                <option th:each="master:${masters}" th:value="${master.getEmail()}" th:text="${master.getFirstName() + ' ' + master.getSurname()}"></option>
+            </select>
         <br/>
-            <textarea name="request" rows="3"></textarea>
+            <textarea id="request" th:field="*{request}" rows="3"></textarea>
             <br/>
-            <button type="submit" th:text="#{msq.create}" class="btn btn-light">
+            <label th:text="#{deadline}"></label>
+            <input style="margin-left:20px; margin-right: 20px;" id="deadline"
+                   th:field="*{deadline}"
+                   type="date"/>
+            <br>
+            <button style="margin-left: 300px" type="submit" th:text="#{msq.create}" class="btn btn-light">
                 Create
             </button>
         </form>

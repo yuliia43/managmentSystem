@@ -22,6 +22,9 @@ public class Comment {
     String comment;
 
     @ManyToOne()
+    Request request;
+
+    @ManyToOne()
     User user;
 
 //    @OneToOne

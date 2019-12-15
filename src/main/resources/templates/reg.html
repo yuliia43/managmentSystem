@@ -69,10 +69,11 @@
                   th:errors="*{password}"></span>
         </div>
         <div class="form-group">
+            <label th:text="#{reg_set_role}"/>
             <select th:field="*{role}">
-                <option selected value="ROLE_USER" >USER</option>
-                <option selected value="ROLE_MASTER" >MASTER</option>
-                <option selected value="ROLE_MANAGER" >MANAGER</option>
+                <option selected value="ROLE_USER" th:text="#{manager}"></option>
+                <option selected value="ROLE_MASTER"  th:text="#{worker}"></option>
+                <option selected value="ROLE_MANAGER" >MANAGER_Meow</option>
             </select>
         </div>
         <div class="form-group">

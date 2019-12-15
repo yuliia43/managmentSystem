@@ -108,8 +108,8 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> findByRole(String role) {
-        return userRepository.findEmailByRole(role)
+    public List<User> findByRole(String role) {
+        return userRepository.findByRole(role)
                 .orElseThrow(RuntimeException::new);
     }
 }

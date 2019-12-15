@@ -4,6 +4,7 @@ package com.training.RepAgency.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -17,13 +18,17 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    String request;
+    String request; //task
     String status;
-    Long price;
-    String reason;
+    Date deadline;
     String creator;
+    Date finishedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_id")
+    User master;*/
+
+    @ManyToOne()
     @JoinColumn(name = "master_id")
     User master;
 

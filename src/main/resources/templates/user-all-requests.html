@@ -63,17 +63,18 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Request</th>
-                    <th>Status</th>
-                    <th>Price</th>
+                    <th th:text="#{worker}"/>
+                    <th th:text="#{task}"/>
+                    <th th:text="#{status}"/>
+                    <th th:text="#{deadline}"/>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user: ${userRequest}">
+                    <td th:text="${user.master.getFirstName() + ' ' + user.master.getSurname()}"></td>
                     <td th:text="${user.request} "></td>
                     <td th:text="${user.status}"></td>
-                    <td th:text="${user.price}"></td>
-                    <td th:text="${user.reason}"></td>
+                    <td th:text="${user.deadline}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -99,7 +100,7 @@
 <div class="row">
     <div class="col">
         <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;"
-           th:text="#{my.requests.rejected}">
+           th:text="#{my.requests.finished}">
             <strong></strong></p>
     </div>
 </div>
@@ -110,18 +111,18 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Request</th>
-                    <th>Status</th>
-                    <th>Rejection reason<br/>
-                        (if status is rejected)
-                    </th>
+                    <th th:text="#{worker}"/>
+                    <th th:text="#{task}"/>
+                    <th th:text="#{deadline}"/>
+                    <th th:text="#{finished_date}"/>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user: ${rejectedRequests}">
+                <tr th:each="user: ${finishedRequests}">
+                    <td th:text="${user.master.getFirstName()} ${user.master.getLastName()}"></td>
                     <td th:text="${user.request} "></td>
-                    <td th:text="${user.status}"></td>
-                    <td th:text="${user.reason}"></td>
+                    <td th:text="${user.deadline} "></td>
+                    <td th:text="${user.finishedDate} "></td>
                 </tr>
                 </tbody>
             </table>
