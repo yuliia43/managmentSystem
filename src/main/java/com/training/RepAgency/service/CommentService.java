@@ -20,12 +20,8 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
-    public Comment saveComment(CommentDTO commentDTO) {
-        return commentRepository.save(Comment.builder()
-                .comment(commentDTO.getComment())
-                .user(userRepository.findByEmail(commentDTO.getUsername()).get())
-                .date(commentDTO.getDate())
-                .build());
+    public Comment saveComment(Comment comment) {
+        return commentRepository.save(comment);
     }
 
     public List<CommentDTO> getAllComments() {
@@ -33,7 +29,7 @@ public class CommentService {
                 .orElseThrow(RuntimeException::new);
 
         return comments.stream().map(c -> CommentDTO.builder()
-                .username(c.getUser().getEmail())
+
                 .date(c.getDate())
                 .comment(c.getComment())
                 .build()).collect(Collectors.toList());

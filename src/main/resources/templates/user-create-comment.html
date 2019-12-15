@@ -12,32 +12,24 @@
 
 <body>
 <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-    <div class="container"><a class="navbar-brand" href="#">RepAgency</a>
+    <div class="container"><a class="navbar-brand" href="#">REQUEST</a>
         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse"
              id="navcol-1">
             <ul class="nav navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link"
-                                        href="/user/create_request"
-                                        th:text="#{new_request}"></a>
+                                        href="/master/new_requests"
+                                        th:text="#{accepted.requests}"></a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        href="/user/all_requests"
-                                        th:text="#{my_orders}"></a>
+                                        href="/master/in_progress_requests"
+                                        th:text="#{in.progress.requests}"></a>
                 </li>
-                <li class="nav-item"><a
-                        class="nav-link"
-                        href="/user/create_comment" th:text="#{create_comment}"></a>
+                <li class="nav-item"><a class="nav-link"
+                                        href="/master/completed_requests"
+                                        th:text="#{in.progress.requests}"></a>
                 </li>
-                <!--                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"-->
-                <!--                                                                                                  href="/admin/users"-->
-                <!--                                                                                                  th:text="#{nav.usersList}"></a>-->
-                <!--                </li>-->
-                <!--                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"-->
-                <!--                                                                                                  href="/admin/cabinet"-->
-                <!--                                                                                                  th:text="#{orders}"></a>-->
-                <!--                </li>-->
             </ul>
             <span class="navbar-text actions"> <a class="login" th:href="@{/logout}" th:text="#{nav.logout}"></a></span>
             <button class="btn" type="button" id="locales" value="uk"
@@ -56,12 +48,12 @@
      class="row justify-content-center align-items-center align-content-center align-self-center">
     <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden"/>
     <div class="col" style="width: 404px;">
-        <form th:action="@{/user/create_comment}"
+        <form th:action="@{/master/create_comment}"
               method="post">
             <label th:text="#{new_comment}"/>
             <br/>
             <textarea name="comment" rows="3"></textarea>
-            <br/>
+            <input th:value="${param.id}" name="id" type="hidden"/>
             <button type="submit" th:text="#{msq.create}" class="btn btn-light">
                 Create
             </button>

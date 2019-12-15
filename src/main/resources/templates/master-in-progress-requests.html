@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/assets/css/styles4.min.css">
 </head>
 
-<body>
+<body style="background-image: url(&quot;/astatic/assets/img/background-clocks.jpg&quot;)>
 <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
     <div class="container"><a class="navbar-brand" href="#">REQUEST</a>
         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
@@ -65,7 +65,7 @@
                 <tr>
                     <th th:text="#{request}"></th>
                     <th th:text="#{status}"></th>
-                    <th th:text="#{price}"></th>
+<!--                    <th th:text="#{price}"></th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -74,9 +74,9 @@
                     <tr>
                         <td th:text="${request.request} "></td>
                         <td th:text="${request.status}"></td>
-                        <td th:text="${request.price}"></td>
+<!--                        <td th:text="${request.price}"></td>-->
                         <td><a th:href="@{/master/in_progress_requests/completed(id=${request.id})}">Make completed</a>
-                            <a th:href="@{/master/in_progress_requests/beyond_repair(id=${request.id})}">Make beyand repair</a></td>
+                            <a type="button" class="btn btn-danger" th:href="@{/master/create_comment(id=${request.id})}">Add comment</a></td>
                     </tr>
                 </div>
                 </tbody>

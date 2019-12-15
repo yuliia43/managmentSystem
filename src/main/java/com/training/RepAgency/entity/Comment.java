@@ -24,8 +24,8 @@ public class Comment {
     @ManyToOne()
     Request request;
 
-    @ManyToOne()
-    User user;
+//    @ManyToOne()
+//    User user;
 
 //    @OneToOne
    // Request request;
